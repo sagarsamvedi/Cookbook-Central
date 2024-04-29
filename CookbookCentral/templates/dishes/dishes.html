@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+<a href= "/add/" class="btn btn-primary mx-auto">Add New Dish</a>
+<a href= "/logout/" class="btn btn-danger mx-auto">Logout</a>
+
+<form class="m-5">
+    {% csrf_token %}
+    <div class="mb-3">
+      <input placeholder="Search for dishes or chefs" name = "query" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+      <button type="submit" class="btn btn-primary m-3">Search</button>
+    </div>
+</form>
+
+<div>
+    <table class="table table-hover">        
+        <thead>
+            <tr>
+                <th scope="col">S.no</th>
+                <th scope="col">Dish Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Given By</th>
+                <th scope="col">Image</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dish in dishes %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{dish.name}}</td>
+                <td >{{ dish.description}}</td>
+                <td>{{dish.user.first_name}}</td>
+                <td>
+                    {% if dish.image %}
+                    <img src="{{ dish.image.url }}" alt="{{ dish.name }}" style="height: 100px; width: 100px">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}    
+                </td>
+                <td>
+                    <a href="/delete/{{dish.id}}" class="btn btn-danger m-1">Delete</button>
+                    <a href="/update/{{dish.id}}" class="btn btn-success m-1">Update</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

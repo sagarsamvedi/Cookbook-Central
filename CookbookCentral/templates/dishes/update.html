@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<form class="m-5" enctype="multipart/form-data" method= "POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Name</label>
+      <input value = "{{dish.name}}" name = "name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Description</label>
+      <textarea name = "description" class="form-control" id="exampleInputEmail1">{{dish.description}} 
+      </textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Image</label>
+      <input name ="image" type="File" accept="image/*" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    {% if dish.image %}
+    <img src="{{ dish.image.url }}" alt="{{ dish.name }}" style="height: 100px; width: 100px">
+    {% else %}
+    <p>No image available</p>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+{% endblock content %}

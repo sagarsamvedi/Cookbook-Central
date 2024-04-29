@@ -1,0 +1,35 @@
+{% extends "base/base.html" %} {% block content %}
+<form class= "m-5" method= "POST">
+    {% csrf_token %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+  <div class="mb-3 ">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input
+      type="email"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      name= "username"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input name= "password" type="password" class="form-control" id="exampleInputPassword1" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Login</button>
+  <div class="m-1 p-1">
+   Don't have an account
+</div>
+<a href="/signup/" class="btn btn-primary">Register</button>
+  
+  
+</form>
+
+{% endblock content %}
