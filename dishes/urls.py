@@ -10,4 +10,5 @@ urlpatterns = [
     path('update/<int:id>',update, name= 'update'),
     path('delete/<int:id>',delete, name= 'delete'),
     path('add/',add, name= 'add'),
+    path('send_dish_email/<dish_id>', send_dish_email,name = 'send_dish_email'),
 ]

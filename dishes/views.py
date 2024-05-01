@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
 from .models import Dish
+from django.core.mail import send_mail, EmailMessage
+from django.conf import settings
 
 def login_page(request):
     if request.method == "POST":
@@ -118,3 +120,31 @@ def logout_page(request):
     logout(request)
     messages.warning(request,"Logged Out")
     return redirect('/login/')
+
+def send_dish_email(request, dish_id):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        dish = Dish.objects.get(pk=dish_id)
+
+        subject = f"Dish Details: {dish.name}"
+        message = f"Name: {dish.name}\n\nDescription: {dish.description}\n\nChef: {dish.user.first_name.capitalize()}"
+        sender =  settings.EMAIL_HOST_USER
+        recipient_list = [email]
+
+        mail = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=sender,
+            to=recipient_list
+        )
+        if dish.image:
+            mail.attach_file(dish.image.path)
+        # Send the email
+        mail.send()
+
+        messages.success(request, f"Email sent successfully to {email}.")
+        return redirect('/home/')
+
+    # If the request method is not POST, render your template with the dish object
+    dish = Dish.objects.get(pk=dish_id)
+    return render(request, 'your_template.html', {'dish': dish})

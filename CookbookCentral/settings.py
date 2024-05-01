@@ -122,3 +122,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Specify the login URL where users will be redirected if they try to access a protected page without logging in
 LOGIN_URL = '/login/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'er.sagar3106@gmail.com'
+EMAIL_HOST_PASSWORD = 'ihmy pisq yavi irrw'

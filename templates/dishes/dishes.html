@@ -29,6 +29,7 @@
                 <th scope="col">Given By</th>
                 <th scope="col">Image</th>
                 <th scope="col">Actions</th>
+                <th scope="col">Share</th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +49,17 @@
                 <td>
                     <a href="/delete/{{dish.id}}" class="btn btn-danger m-1">Delete</button>
                     <a href="/update/{{dish.id}}" class="btn btn-success m-1">Update</button>
+                </td>
+                <td>
+                    <form method= "POST"  action="{% url 'send_dish_email' dish.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Email of Reciever</label>
+                          <input name = "email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    
                 </td>
             </tr>
             {% endfor %}
