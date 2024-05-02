@@ -122,29 +122,42 @@ def logout_page(request):
     return redirect('/login/')
 
 def send_dish_email(request, dish_id):
+    # Check if the request method is POST
     if request.method == 'POST':
+        # Get the email address from the form data
         email = request.POST.get('email')
+        # Fetch the dish object based on dish_id
         dish = Dish.objects.get(pk=dish_id)
 
+        # Construct the email subject
         subject = f"Dish Details: {dish.name}"
+        # Construct the email message body
         message = f"Name: {dish.name}\n\nDescription: {dish.description}\n\nChef: {dish.user.first_name.capitalize()}"
+        # Get the email sender from Django settings
         sender =  settings.EMAIL_HOST_USER
+        # Create a list of recipients, in this case, it's just one recipient
         recipient_list = [email]
 
+        # Create an EmailMessage object with subject, body, sender, and recipients
         mail = EmailMessage(
             subject=subject,
             body=message,
             from_email=sender,
             to=recipient_list
         )
+
+        # If the dish has an image, attach it to the email
         if dish.image:
             mail.attach_file(dish.image.path)
+        
         # Send the email
         mail.send()
 
+        # Display a success message
         messages.success(request, f"Email sent successfully to {email}.")
+        # Redirect the user to the home page
         return redirect('/home/')
 
-    # If the request method is not POST, render your template with the dish object
-    dish = Dish.objects.get(pk=dish_id)
-    return render(request, 'your_template.html', {'dish': dish})
+    # If the request method is not POST, redirect the user to the home page
+    
+    return redirect('/home/')
